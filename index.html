@@ -4,11 +4,11 @@
   <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Blog : My blog" />
+    <meta name="description" content="Type.new() : A. Matías Quezada" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Blog</title>
+    <title>Type.new()</title>
   </head>
 
   <body>
@@ -18,8 +18,8 @@
         <header class="inner">
           <a id="forkme_banner" href="https://github.com/amatiasq/blog">View on GitHub</a>
 
-          <h1 id="project_title">Blog</h1>
-          <h2 id="project_tagline">My blog</h2>
+          <h1 id="project_title">Type.new()</h1>
+          <h2 id="project_tagline">A. Matías Quezada</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/amatiasq/blog/zipball/master">Download this project as a .zip file</a>
@@ -31,49 +31,366 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+        <blockquote>
+<p>NOTE: This is a translation of <a href="http://blog.amatiasq.com/2014/03/type-new/">my spanish post</a>, if you speak spanish I recommend you the original version</p>
+</blockquote>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<h2>
+<a name="constructors-in-javascript" class="anchor" href="#constructors-in-javascript"><span class="octicon octicon-link"></span></a>Constructors in Javascript</h2>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<p>I've talked before about the limitation of constructors in javascript and the complexity it is to extend them.</p>
+
+<pre><code>function Person(name) {
+  this.name = name;
+}
+Person.prototype.methodA = function() { ... };
+
+function Employee(name, position) {
+  Person.call(this, name);
+  this.position = position;
+}
+Employee.prototype = Object.create(Person.prototype);
+Employee.prototype.methodB = function() { ... };
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>This topic is responsible for headaches of the majority of people developing javascript, the complexity needed to create a simple "class". This lead us to the point where the next version of ECMAScript (for those of you than don't know it, it's the standard Javascript is based on) has included a simplest way to do the same: the <code>class</code> keyword.</p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<pre><code>class Person {
+  constructor(name) {
+    this.name = name;
+  }
+  methodA() { }
+}
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+class Employee extends Person {
+  constructor(name, position) {
+    super(name);
+    this.position = position;
+  }
+  methodB() { }
+}
+</code></pre>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<p><a target="_blank" href="http://www.es6fiddle.net/hsq7hzw6/">Try me!</a></p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Although I've seen a lot of people exited thinking than ECMAScript 6 classes will be real clases I must say this code does nothing more and nothing less than the first code. And it's really important to know it because although it looks like Java or C++ classes, in this case it's still being object using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain">prototypal inheritance</a> and hide it will only help us to not know why the code isn't working as we expected.</p>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<p>In any case we see than type definition in javascript is a complicated topic and, in my opinion, the solution proposed by the ECMA team is not the more accurate one.</p>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<h2>
+<a name="object-oriented" class="anchor" href="#object-oriented"><span class="octicon octicon-link"></span></a>Object oriented</h2>
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<p>I think the problem lies on the definition we give "Object Oriented Programming" in first place, given than main OOP languages use to create object using classes and although objects are the base of the sistem the structure is given by classes. What I call OOP with classes.</p>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>When other language also defined as OOP but focused in a different way, Javascript between them, in this case the language has not classes but everything are objects and the structure is created using protitypes and every object can be the prototype of another object, and that meas than if B prototypes A, every property on A should also exist on B. This is what I call OOP with prototypes.</p>
+
+<p>I've faced with a lot of people than thinks than OOP is not possible without classes so if Javascript has not classes it cannot be called OOP language. As on every geeks discussion we end on <a href="https://en.wikipedia.org/wiki/Object-oriented_programming#Fundamental_features_and_concepts">Wikipedia</a>:</p>
+
+<blockquote>
+<p>For example, object-oriented programming that uses classes is sometimes called class-based programming, while prototype-based programming does not typically use classes.</p>
+</blockquote>
+
+<p>To be clear, a object oriented language is the one than has object (clear boy) and fulfills a set of features (dynamic dispatch, encapsulation, subtype polymorphism, inheritance, open recursion...). While in Java this is implemented using classes Javascript uses prototypes.</p>
+
+<h2>
+<a name="javascript-beginings" class="anchor" href="#javascript-beginings"><span class="octicon octicon-link"></span></a>Javascript Beginings</h2>
+
+<p>Sure most of you know this better than I do but as far as I know, I don't think it's true but it helped me in this case. Javascript was first called LiveScript, legend has it that at that time Java growing up and for marketing reasons they decied to call the new language Javascript. And for the samen reason they decided to modify the language to look more like Java adding, with another features, the <code>new</code> operator to look like it had classes.</p>
+
+<p>Something curius about constructors in Javascript, besides than they are simple functions, is than every function in javascript has the property <code>prototype</code> than has by default a object than only has a single property, the <code>constructor</code> property. That is the constructor itself.</p>
+
+<pre><code>function Testing() { }
+console.log(Testing.prototype.constructor === Testing);
+
+var proto = Testing.prototype;
+console.log(proto.constructor.prototype === proto);
+</code></pre>
+
+<p><a target="_blank" href="http://jsfiddle.net/amatiasq/Pb2Ap/">Try me!</a></p>
+
+<h2>
+<a name="constructors-vs-prototype-objects" class="anchor" href="#constructors-vs-prototype-objects"><span class="octicon octicon-link"></span></a>Constructors vs prototype objects</h2>
+
+<p>This made me think maybe the original intention of javascript objects was <strong>not to have constructors than contain prototypes but to have prototypes than contains constructors</strong>. That is: instead of...</p>
+
+<pre><code>function MyType() {
+  this.id = 1;
+}
+MyType.prototype.methodA = function() { ... }
+</code></pre>
+
+<p>Do this...</p>
+
+<pre><code>var MyType = {
+  constructor: function() {
+    this.id = 1;
+  },
+  methodA: function() { ... },
+};
+</code></pre>
+
+<p>Cool! Doesn't it look like a more simpler way to declare types? <a href="https://gist.github.com/amatiasq/5215294">Here</a> we can see the same type written with constructors and with this paradigm so you can judge yourselves. And what happens when we try to invoke the constructor? do we have to use <code>.call()</code> or <code>.apply()</code> to change it's context?</p>
+
+<pre><code>var instance = Object.create(MyType);
+instance.constructor();
+</code></pre>
+
+<p>BOOM! The constructor already has <code>this</code> because it's invoked directly on the instance! Isn't it way simpler and logic from this point of view?</p>
+
+<p>Also by accident we have wiped out the constructor function and what we have is a simple object, the more basic element on OOP. I mean, to declare a type we only have to create an object, and to prototype an object we only need one step.</p>
+
+<pre><code>var SubType = Object.create(MyType);
+</code></pre>
+
+<p>We are not forced, unlike the first case, to create a new constructor to create a subtype, by prototypal inheritance we have the same constructor than <code>MyType</code></p>
+
+<pre><code>console.log(SubType.constructor === MyType.constructor); // true
+</code></pre>
+
+<p><a target="_blank" href="http://jsfiddle.net/amatiasq/VRKYv/">Try me!</a></p>
+
+<p>And the best part, what happen if we want to create a type without constructor? No problem.</p>
+
+<pre><code>var MyType = {};
+console.log(MyType.constructor); // Object
+</code></pre>
+
+<p><a target="_blank" href="http://jsfiddle.net/amatiasq/yGJLL/">Try me!</a></p>
+
+<h2>
+<a name="ecmascript-6" class="anchor" href="#ecmascript-6"><span class="octicon octicon-link"></span></a>ECMAScript 6</h2>
+
+<p>This paradigm looks very similar to the way to create classes in ECMAScript 6.</p>
+
+<pre><code>class MyType {
+  constructor() {
+    this.id = 1;
+  }
+  methodA() { ... }
+}
+</code></pre>
+
+<p>Someone can say "yes, but with ECMAScript 6 classes we can extend, call parent method with <code>super</code> and we don't have to write <code>function</code> everywhere...". True, but these are not ECMAScript 6 classes' features, these are features of <a href="https://github.com/lukehoban/es6features#enhanced-object-literals">all objects literals</a> in ECMAScript 6.</p>
+
+<pre><code>// Clase ECMAScript 6
+class Employee extends Person {
+  constructor(name, postition) {
+    super(name);
+    this.position = postition;
+  }
+  methodA() { ... }
+}
+
+// Objeto en ECMAScript 6 estándar
+var Employee = {
+  __proto__: Person,
+
+  constructor() {
+    super(name)
+    this.id = 1;
+  },
+  methodA() { ... }
+};
+</code></pre>
+
+<p>The differences between a ECMAScript 6 class and a ECMAScript 6 object are minimal, but as a class makes us think <code>Employee</code> will behave like a Java class (and it won't), a object is just that, a simple object; and we all are capable to understand how a object behaves, right? (otherwise this is not the article you need to read :P).</p>
+
+<p>But let's put ECMAScript 6 aside for now, we'll need time until we can use it for big projects.</p>
+
+<h2>
+<a name="instanciation" class="anchor" href="#instanciation"><span class="octicon octicon-link"></span></a>Instanciation</h2>
+
+<p>That was type definition, but how do we instanciate it? First we'll need to think what a instance is, if we haven't classes can we have instances? Acording to Wikipedia</p>
+
+<blockquote>
+<p>In computer science, an object is a location in memory having a value and referenced by an identifier. An object can be a variable, function, or data structure. In the object-oriented programming paradigm,"object," refers to a particular instance of a class where the object can be a combination of variables, functions, and data structures.</p>
+</blockquote>
+
+<p>At least for me, the word doesn't change too much, the issue is we need to create object to be prototypes and we want to create "instances" of this prototypes. The way to prototype an object is using <code>Object.create()</code>.</p>
+
+<pre><code>var instance = Object.create(MyType);
+</code></pre>
+
+<p>Wait a moment... this looks exactly the same we did to create a subtype, isn't it? Yes, it is.</p>
+
+<p>Then what is the difference between a instance and a subtype? In general, nothing. <strong>A instance IS a subtype</strong> because it can be a prototype for other objects. But in the most cases "instances" have a need than subtypes don't: on a instance we invoke the constructor, on a subtype we don't. </p>
+
+<pre><code>var MyType = {
+  constructor: function() {
+    this.id = 1;
+  }
+};
+
+// Create subtype
+var SubType = Object.create(MyType);
+
+// Create instance
+var instance = Object.create(MyType);
+instance.constructor();
+</code></pre>
+
+<p>This similitude between a instance and a subtype helps us understand how Javascript at the end is reallly, really simple: everything is an object; there is no difference between a type and a "instance" because the difference is conceptual.</p>
+
+<p>This is really useful to understand Javascript's simplicity and core, but it's a little bit tedious to have to do two steps to instanciate, can we simplify it?</p>
+
+<h2>
+<a name="typenew-is-the-new-new" class="anchor" href="#typenew-is-the-new-new"><span class="octicon octicon-link"></span></a><code>Type.new()</code> is the new <code>new</code>
+</h2>
+
+<p>The truth is that we could, we can create a function to do this process:</p>
+
+<pre><code>function createInstance(Type) {
+  var instance = Object.create(Type);
+  instance.constructor();
+  return instance;
+}
+
+var Type = {
+  constructor: function() {
+    this.id = 1;
+  }
+};
+
+var instance1 = createInstance(Type);
+
+var TypeWithoutConstructor = {};
+var instance2 = createInstance(TypeWithoutConstructor);
+</code></pre>
+
+<p><a target="_blank" href="http://jsfiddle.net/amatiasq/Jry2Z/">Try me!</a></p>
+
+<p>And what happens if instead of call it <code>createInstance</code> we call it <code>$new</code> for example?</p>
+
+<pre><code>var instance = $new(MyType);
+</code></pre>
+
+<p>It starts to look similar, we only need to chante <code>$new</code> function to pass parameters to the constructor function.</p>
+
+<pre><code>function $new(Type, params) {
+  var instance = Object.create(Type);
+  instance.constructor.apply(instance, params);
+  return instance;
+}
+
+var Type = {
+  constructor: function(name) {
+    this.name = name;
+  }
+};
+
+var instance = $new(Type, [ 'bob' ]);
+</code></pre>
+
+<p><a target="_blank" href="http://jsfiddle.net/amatiasq/t8QCk/">Try me!</a></p>
+
+<p>Looks like it works, but just to finish it, why don't we set <code>$new</code> as a <code>Type</code> method? this way we could pass the arguments without the array and as ECMAScript 5 allow us to use kewords as properties we can call it simply <code>new</code>.</p>
+
+<pre><code>var Type = {
+    new: function() {
+        var instance = Object.create(this);
+        instance.constructor.apply(instance, arguments);
+        return instance;
+    },
+    constructor: function(name) {
+        this.name = name;
+    }
+};
+
+var instance = Type.new('bob' );
+</code></pre>
+
+<p><a target="_blank" href="http://jsfiddle.net/amatiasq/x3qM4/">Try me!</a></p>
+
+<p>And we have a way we can use with ECMAScript 5 to create types and instances in a simple way. But what is the difference between doing this and using <code>new Constructor()</code>? Besides the simplicity of this pattern to create and extend types, it has more advantages, mainly because it allow us to control exactly <strong>how</strong> each type creates it's subtypes. In some cases you'll find useful to replace the <code>.new()</code> method for another function in a specific type for memory optimization or extra functionallities but this is beyond the reach of this post.</p>
+
+<h2>
+<a name="conclusion" class="anchor" href="#conclusion"><span class="octicon octicon-link"></span></a>Conclusion</h2>
+
+<p>After spending years trying <a href="https://gist.github.com/amatiasq/4038135">hundred</a> <a href="https://gist.github.com/amatiasq/5215294">of</a> <a href="https://gist.github.com/amatiasq/5254098">ways</a> <a href="https://gist.github.com/amatiasq/5619166">to</a> <a href="https://gist.github.com/amatiasq/6270563">create</a> <a href="https://github.com/amatiasq/LifeJS/blob/master/lib/animal.js">and</a> <a href="https://github.com/amatiasq/-legacy-BRIAP/blob/master/src/core/base.js">extend</a> <a href="https://github.com/amatiasq/-legacy-bio/blob/master/src/core/Base.js">"classes"</a> <a href="https://github.com/amatiasq/jsbase/blob/master/src/extend.js">to</a> <a href="https://github.com/amatiasq/-legacy-Life/blob/master/lib/physic/Force.dart">find</a> <a href="https://github.com/amatiasq/glib/blob/master/core/base.js">the</a> <a href="https://github.com/amatiasq/lulas/blob/master/src/core/extend.js">simplest</a> fastest and more elegant, I keep <a href="https://gist.github.com/amatiasq/7892749">this one</a> as my choice. The lesson Javascript gave me is than it doesn't worth it to fight it's nature, if we want to use Javascript successfuly the more reasonable is to use Javascript and not to use it against it's nature.</p>
+
+<p>Time will tell but I think this system can even compete face to face with ECMAScript 6 "classes", but in any case the conversion between a type created using this pattern and the constructor is easy.</p>
+
+<p>For example, to convert a type created with this pattern to a constructor to use it with <code>new</code>:</p>
+
+<pre><code>var MyType = {
+  myMethod: function() { ... },
+};
+
+function MyConstructor() {
+  MyType.constructor.apply(this, arguments);
+}
+MyConstructor.prototype = MyType;
+</code></pre>
+
+<p><a target="_blank" href="http://jsfiddle.net/amatiasq/tGD7G/">Try me!</a></p>
+
+<p>And for convert a constructor into this pattern:</p>
+
+<pre><code>function MyConstructor() {
+  this.value = 1;
+}
+MyConstructor.prototype.myMethod = function() { ... };
+
+var MyType = MyConstructor.prototype;
+// and if you wish...
+MyType.new = $new;
+</code></pre>
+
+<p><a target="_blank" href="http://jsfiddle.net/amatiasq/5R4z2/">Try me!</a></p>
+
+<h2>
+<a name="initializer" class="anchor" href="#initializer"><span class="octicon octicon-link"></span></a>Initializer</h2>
+
+<p>Finally a bonus, after all this journey I've realized than the constructor, than in Javascript looks so important, isn't. If we stop to see the constructor we see it's a simple function.</p>
+
+<pre><code>function MyType() { ... }
+</code></pre>
+
+<p>It has nothing special, even we can invoke it as a function and it doesn't construct anything. Then who constructs? <code>new</code> operator is the one than creates a new object and then invokes the method called <code>constructor</code>, than doesn't have any difference with any other method the object may have.</p>
+
+<p>But as I see it, the function constructor does more initialization than construction, it should be responsible for initialize the object's properties, not to construct. Seeing it this way it's obvius than the name "constructor" it's not the more appropiate one, in my case I prefer to call it "initializer" or just "init", as Backbone does on it's objects.</p>
+
+<p>That's why on my projects when I use this pattern, I prefer my function <code>$new</code> to invoke the method <code>init</code> instead of the method <code>constructor</code>.</p>
+
+<pre><code>function $new() {
+  var obj = Object.create(this);
+  obj.init.apply(obj, arguments);
+  return obj;
+}
+
+var MyType = {
+  new: $new,
+  init: function() {
+    this.value = 1;
+  }
+};
+
+var instance = MyType.new();
+</code></pre>
+
+<p><a target="_blank" href="http://jsfiddle.net/amatiasq/7h7Te/">Try me!</a></p>
       </section>
     </div>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Blog maintained by <a href="https://github.com/amatiasq">amatiasq</a></p>
+        <p class="copyright">Type.new() maintained by <a href="https://github.com/amatiasq">amatiasq</a></p>
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
 
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-47319201-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
 
   </body>
 </html>
